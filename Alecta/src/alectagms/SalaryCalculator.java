@@ -10,8 +10,8 @@ public class SalaryCalculator {
     private int HOURS = 9; //No of maximum hours for work per day
     private int HOURS_SAT = 5; //No of maximum hours for Saturday
     private double salaryPerHour;
-    private double salaryOT1 = 12.5;
-    private double salaryOT2 = 25;
+    private double salaryOT1 = 12.5; //Salary for OT1 per hour
+    private double salaryOT2 = 25; //Salary for OT2 per hour
     private double attendanceAllowance = 1000;
     private Calendar c; //Calendar instance to set the date
     private Employee employee;
