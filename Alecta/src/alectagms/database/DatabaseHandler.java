@@ -29,6 +29,11 @@ protected void displaySQLErrors(SQLException ex){
   
   // connect to the database by passing the username and password through a Properties object
   //  "jdbc:mysql://localhost:3306/AlectaDB" specifies the URL of the database we want to access
+  /*
+    Properties prop = new Properties();
+    prop.setProperty("user","root");
+    prop.setProperty("password","fara619boss");
+   */  
     protected void connectDB(Properties prop){
         try{
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/AlectaDB",prop);
@@ -48,6 +53,10 @@ protected void displaySQLErrors(SQLException ex){
         while(rs.next()){
             System.out.println(rs.getString(1)+"    "+rs.getString(2)+"     "+rs.getString(2));
         }
+        
+        rs.close();
+        st.close();
+        connection.close();
         }
         catch(SQLException ex){
             displaySQLErrors(ex);
