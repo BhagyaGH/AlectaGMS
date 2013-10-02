@@ -4,7 +4,6 @@ package alectagms;
  * Employee Class
  */
 
-
 public class Employee {
     private String empID;
     private MonthlyAttendance attendance;
