@@ -20,12 +20,8 @@ public class OrderDBHandler extends DatabaseHandler{
         catch(Exception ex){
             System.out.println("Driver class not found");
         }
-        
-       // this.connectDB("root","fara619boss");
     }
-   
-   
-    
+      
     public boolean enterOrder(Order ord){
          try{  
         String query = "INSERT INTO alectadb.`order` (`garmentItemCode`, customer, quantity, status) \n" +
@@ -40,10 +36,40 @@ public class OrderDBHandler extends DatabaseHandler{
          }
     }
     
+    
+   public void updateOrder(){
+   
+   } 
     // method to search the order by entering the relevant criteria 
-   // public Order searchOrder(String field,String argument){
-        
-   // }
+   public ArrayList<Order> searchOrder(String field,String argument){
+      String query=null;
+       try{
+          int arg = Integer.parseInt(argument);
+          query = "select * from alectadb.`order` where `"+field+"` = "+arg;
+           System.out.println(query);
+      }catch(NumberFormatException ex){
+          query = "select * from alectadb.`order` where `"+field+"` = '"+argument+"'";
+           System.out.println(query);
+      }
+       
+      ResultSet rs = this.executeQuery(query);
+      ArrayList<Order> list = new ArrayList<>();
+     Order ord=null;
+      try{
+      while(rs.next()){
+          
+      ord = this.createOrderObject(rs);
+      
+        if(ord != null)
+            list.add(ord);
+      }
+      }
+      catch(SQLException ex){
+      this.displaySQLErrors(ex);
+      }
+      
+      return list;
+   }
     
    public boolean deleteOrder(int ref){
          try{  
@@ -57,7 +83,7 @@ public class OrderDBHandler extends DatabaseHandler{
              return false;
          }
    }
-   // public void updateOrder(){}
+  
    
    // show all orders
   public ArrayList<Order> getOrders(){
