@@ -13,34 +13,39 @@ import java.util.ArrayList;
 
 public class OrderDBHandler extends DatabaseHandler{
 
-    public OrderDBHandler() {
-        try{
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-        }
-        catch(Exception ex){
-            System.out.println("Driver class not found");
-        }
-    }
-      
+// Enter the order details into the database by passing an order object    
     public boolean enterOrder(Order ord){
          try{  
         String query = "INSERT INTO alectadb.`order` (`garmentItemCode`, customer, quantity, status) \n" +
-"VALUES ("+ord.getGamentItemCode()+",'"+ord.getCustomer()+"',"+ord.getQuantity()+",'Not Started');";
-             System.out.println(query);
-        this.executeUpdate(query);
-        return true;
+        "VALUES ("+ord.getGamentItemCode()+",'"+ord.getCustomer()+"',"+ord.getQuantity()+",'Not Started');";
+        
+        System.out.println(query);
+            this.executeUpdate(query);
+            return true;
          }
-         catch(Exception ex){
+        catch(Exception ex){
              System.out.println("Exception at enterorder");
              return false;
          }
     }
     
-    
-   public void updateOrder(){
+    //UPDATE columns of the order table selecting the record based on the primary key value
+   public boolean updateOrder(String updatedColumn,String updatedValue,int primaryKey){
+   String query=null;
+       try{
+           int arg = Integer.parseInt(updatedValue);
+           query = "UPDATE alectadb.`order` SET `"+updatedColumn+"`=" +arg+ " where `orderReference` = "+primaryKey;
+           System.out.println(query);
+      }catch(NumberFormatException ex){
+           query = "UPDATE alectadb.`order` SET `"+updatedColumn +"`= '"+ updatedValue+"' where `orderReference` = "+primaryKey;
+           System.out.println(query);
+      }
+       this.executeUpdate(query);
+       return true;
+   }
    
-   } 
-    // method to search the order by entering the relevant criteria 
+   
+    // method to search the order by entering the column name and the keyword
    public ArrayList<Order> searchOrder(String field,String argument){
       String query=null;
        try{
@@ -54,7 +59,7 @@ public class OrderDBHandler extends DatabaseHandler{
        
       ResultSet rs = this.executeQuery(query);
       ArrayList<Order> list = new ArrayList<>();
-     Order ord=null;
+      Order ord=null;
       try{
       while(rs.next()){
           
@@ -70,9 +75,10 @@ public class OrderDBHandler extends DatabaseHandler{
       
       return list;
    }
-    
+   
+   //delete a record based on the primary key value 
    public boolean deleteOrder(int ref){
-         try{  
+         try{     
         String query = "DELETE FROM alectadb.`order` WHERE `orderReference` ="+ref;
              System.out.println(query);
         this.executeUpdate(query);
@@ -85,7 +91,7 @@ public class OrderDBHandler extends DatabaseHandler{
    }
   
    
-   // show all orders
+   // show all orders in the table
   public ArrayList<Order> getOrders(){
       
       ArrayList<Order> orderList = new ArrayList<Order>();
@@ -108,6 +114,7 @@ public class OrderDBHandler extends DatabaseHandler{
          }  
     }
   
+  // create an order object by passing the result set from a query
   public Order createOrderObject(ResultSet rs){
         Order newOrder = new Order();
         try{

@@ -26,7 +26,7 @@ public class Order {
     private int orderReference;
     private int gamentItemCode;
     private String customer;
-    private int quentity;
+    private int quantity;
     private Date deadLine;
     private Timestamp timestamp;
     private String status;
@@ -48,8 +48,8 @@ public class Order {
         return orderReference;
     }
 
-    public int getQuentity() {
-        return quentity;
+    public int getQuantity() {
+        return quantity;
     }
 
     public String getStatus() {
@@ -76,8 +76,8 @@ public class Order {
         this.orderReference = orderReference;
     }
     
-    public void setQuentity(int quentity) {
-        this.quentity = quentity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setStatus(String status) {
