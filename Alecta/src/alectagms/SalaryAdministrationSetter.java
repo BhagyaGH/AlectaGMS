@@ -5,9 +5,8 @@ package alectagms;
  * Basic Salary
  * OT1
  * OT2
- * etc.
  */
+
 public class SalaryAdministrationSetter {
-    
-    
+        
 }
