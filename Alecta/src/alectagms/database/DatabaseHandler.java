@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package alectagms.database;
 import java.sql.*;
 import java.util.Properties;
@@ -17,16 +12,6 @@ protected void displaySQLErrors(SQLException ex){
     System.out.println("VendorError: "+ex.getErrorCode());    
 }
 
-//constructor creates an instance of the Driver class
-    public DatabaseHandler() {
-        try{
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-        }
-        catch(Exception ex){
-            System.out.println("Driver class not found");
-        }     
-        }
-  
   // connect to the database by passing the username and password through a Properties object
   //  "jdbc:mysql://localhost:3306/AlectaDB" specifies the URL of the database we want to access
   /*
@@ -34,33 +19,53 @@ protected void displaySQLErrors(SQLException ex){
     prop.setProperty("user","root");
     prop.setProperty("password","fara619boss");
    */  
-    protected void connectDB(Properties prop){
+    public void connectDB(String username,String password){
+           try{
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+               System.out.println("drive connect");
+        }
+        catch(Exception ex){
+            System.out.println("Driver class not found");
+        } 
+           
         try{
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/AlectaDB",prop);
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/AlectaDB",username,password);
+            System.out.println("connected");
         }catch(SQLException ex){
             displaySQLErrors(ex);
+            System.out.println("not connected :(");
         }
     }
     
-    // execute the query written as a string and manipulate the result given as a result set;
-    public void executeQuery(){
+    // execute the query written as a string for INSERT,DELETE and UPDATE operations;
+    public void executeUpdate(String query){
+        this.connectDB("root","fara619boss" );
         try{
         Statement st = connection.createStatement();
-        
-        ResultSet rs = st.executeQuery("Select * from EmployeeDetails");
-        
-        
-        while(rs.next()){
-            System.out.println(rs.getString(1)+"    "+rs.getString(2)+"     "+rs.getString(2));
-        }
-        
-        rs.close();
+        st.executeUpdate(query);
         st.close();
         connection.close();
         }
         catch(SQLException ex){
             displaySQLErrors(ex);
+            System.out.println("Exception at executeUpdate");
+        }      
+    }
+    
+    //execute the query written as a string for SELECT operations;
+    public ResultSet executeQuery(String query){
+        this.connectDB("root","fara619boss" );
+        
+        try{
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery(query);
+       return rs;
         }
         
+        catch(SQLException ex){
+            displaySQLErrors(ex);
+            System.out.println("Exception at executeQuery");
+            return null;
+        }
     }
 }
